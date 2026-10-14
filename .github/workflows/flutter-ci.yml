@@ -1,0 +1,31 @@
+name: CI - MN Calhas
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: "3.35.7"
+          cache: true
+
+      - name: Instalar dependencias
+        run: flutter pub get
+
+      - name: Executar testes automatizados
+        run: flutter test
+
+      - name: Compilar aplicacao web
+        run: flutter build web
