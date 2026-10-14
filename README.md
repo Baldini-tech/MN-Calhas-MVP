@@ -115,3 +115,27 @@ Universidade de Franca — Unifran
 Curso: Análise e Desenvolvimento de Sistemas
 
 Projeto acadêmico: MN Calhas
+
+## Validação e testes
+
+O sistema MN Calhas possui quatro testes automatizados:
+
+- Teste da tela inicial.
+- Teste de navegação para Clientes.
+- Teste de navegação para Orçamentos.
+- Teste de navegação para Serviços.
+
+Todos os quatro testes foram executados com sucesso.
+
+Para executar os testes, utilize o comando:
+
+```bash
+flutter test
+```
+
+## Controle de versões
+
+O projeto utiliza Git e GitHub para controlar suas versões.
+
+As melhorias podem ser desenvolvidas em branches separadas
+e integradas à branch principal por meio de Pull Requests.
