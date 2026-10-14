@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mn_calhas/main.dart';
 import 'package:mn_calhas/screens/clientes_screen.dart';
 import 'package:mn_calhas/screens/orcamentos_screen.dart';
+import 'package:mn_calhas/screens/servicos_screen.dart';
 
 void main() {
   testWidgets('Verifica a tela inicial do MN Calhas', (tester) async {
@@ -62,5 +63,24 @@ await tester.pump(const Duration(milliseconds: 500));
 
   // Verifica se a tela de orcamentos foi aberta.
   expect(find.byType(OrcamentosScreen), findsOneWidget);
+});
+
+testWidgets('Verifica a navegacao para a tela de Servicos', (tester) async {
+  await tester.pumpWidget(const MNCalhasApp());
+
+  // Verifica se a opcao Servicos existe.
+  expect(find.text('Serviços'), findsOneWidget);
+
+  // Rola a pagina ate o botao ficar visivel.
+  await tester.ensureVisible(find.text('Serviços'));
+  await tester.pump();
+
+  // Abre a tela de Servicos.
+  await tester.tap(find.text('Serviços'));
+  await tester.pump();
+  await tester.pump(const Duration(milliseconds: 500));
+
+  // Confirma que a tela de Servicos foi aberta.
+  expect(find.byType(ServicosScreen), findsOneWidget);
 });
 }
