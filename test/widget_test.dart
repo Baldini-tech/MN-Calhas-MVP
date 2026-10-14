@@ -15,6 +15,14 @@ void main() {
     // Verifica os botões principais
     expect(find.text('Clientes'), findsOneWidget);
     expect(find.text('Orçamentos'), findsOneWidget);
+
+    // Rola a tela até encontrar o botão Serviços
+    await tester.scrollUntilVisible(
+      find.text('Serviços'),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+
     expect(find.text('Serviços'), findsOneWidget);
 
     // Rola a página até encontrar o botão Sair
@@ -27,7 +35,7 @@ void main() {
     // Verifica o botão Sair
     expect(find.text('Sair'), findsOneWidget);
   });
-    testWidgets('Verifica a navegacao para a tela de Clientes', (tester) async {
+  testWidgets('Verifica a navegacao para a tela de Clientes', (tester) async {
     await tester.pumpWidget(const MNCalhasApp());
 
     // Localiza o botao Clientes na tela inicial.
@@ -36,9 +44,9 @@ void main() {
     // Abre a tela de gerenciamento de clientes.
     await tester.tap(find.text('Clientes'));
 
-// Aguarda a transição de navegação.
-await tester.pump();
-await tester.pump(const Duration(milliseconds: 500));
+    // Aguarda a transição de navegação.
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
 
     // Confirma que a tela inicial nao esta mais visivel.
     expect(
@@ -51,36 +59,39 @@ await tester.pump(const Duration(milliseconds: 500));
   });
 
   testWidgets('Verifica a navegacao para a tela de Orcamentos', (tester) async {
-  await tester.pumpWidget(const MNCalhasApp());
+    await tester.pumpWidget(const MNCalhasApp());
 
-  // Verifica se a opcao Orcamentos aparece na tela inicial.
-  expect(find.text('Orçamentos'), findsOneWidget);
+    // Verifica se a opcao Orcamentos aparece na tela inicial.
+    expect(find.text('Orçamentos'), findsOneWidget);
 
-  // Abre a tela de orcamentos.
-  await tester.tap(find.text('Orçamentos'));
-  await tester.pump();
-  await tester.pump(const Duration(milliseconds: 500));
+    // Abre a tela de orcamentos.
+    await tester.tap(find.text('Orçamentos'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
 
-  // Verifica se a tela de orcamentos foi aberta.
-  expect(find.byType(OrcamentosScreen), findsOneWidget);
-});
+    // Verifica se a tela de orcamentos foi aberta.
+    expect(find.byType(OrcamentosScreen), findsOneWidget);
+  });
 
-testWidgets('Verifica a navegacao para a tela de Servicos', (tester) async {
-  await tester.pumpWidget(const MNCalhasApp());
+  testWidgets('Verifica a navegacao para a tela de Servicos', (tester) async {
+    await tester.pumpWidget(const MNCalhasApp());
 
-  // Verifica se a opcao Servicos existe.
-  expect(find.text('Serviços'), findsOneWidget);
+    // Rola a página até encontrar o botão Serviços.
+    await tester.scrollUntilVisible(
+      find.text('Serviços'),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
 
-  // Rola a pagina ate o botao ficar visivel.
-  await tester.ensureVisible(find.text('Serviços'));
-  await tester.pump();
+    // Verifica se o botão Serviços existe.
+    expect(find.text('Serviços'), findsOneWidget);
 
-  // Abre a tela de Servicos.
-  await tester.tap(find.text('Serviços'));
-  await tester.pump();
-  await tester.pump(const Duration(milliseconds: 500));
+    // Abre a tela de Servicos.
+    await tester.tap(find.text('Serviços'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
 
-  // Confirma que a tela de Servicos foi aberta.
-  expect(find.byType(ServicosScreen), findsOneWidget);
-});
+    // Confirma que a tela de Servicos foi aberta.
+    expect(find.byType(ServicosScreen), findsOneWidget);
+  });
 }

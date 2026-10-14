@@ -8,36 +8,68 @@ void main() {
   runApp(const MNCalhasApp());
 }
 
-class MNCalhasApp extends StatelessWidget {
+class MNCalhasApp extends StatefulWidget {
   const MNCalhasApp({super.key});
+
+  @override
+  State<MNCalhasApp> createState() => _MNCalhasAppState();
+}
+
+class _MNCalhasAppState extends State<MNCalhasApp> {
+  double escalaTexto = 1.0;
+
+  void aumentarTexto() {
+    setState(() {
+      escalaTexto = (escalaTexto + 0.2).clamp(1.0, 1.6);
+    });
+  }
+
+  void diminuirTexto() {
+    setState(() {
+      escalaTexto = (escalaTexto - 0.2).clamp(1.0, 1.6);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       locale: const Locale('pt', 'BR'),
 
-supportedLocales: const [
-  Locale('pt', 'BR'),
-],
+      supportedLocales: const [Locale('pt', 'BR')],
 
-localizationsDelegates: const [
-  GlobalMaterialLocalizations.delegate,
-  GlobalWidgetsLocalizations.delegate,
-  GlobalCupertinoLocalizations.delegate,
-],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       title: 'MN Calhas',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        fontFamily: 'Roboto',
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(
+            context,
+          ).copyWith(textScaler: TextScaler.linear(escalaTexto)),
+          child: child!,
+        );
+      },
+      theme: ThemeData(useMaterial3: true, fontFamily: 'Roboto'),
+      home: HomeScreen(
+        aumentarTexto: aumentarTexto,
+        diminuirTexto: diminuirTexto,
       ),
-      home: const HomeScreen(),
     );
   }
 }
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({
+    super.key,
+    required this.aumentarTexto,
+    required this.diminuirTexto,
+  });
+
+  final VoidCallback aumentarTexto;
+  final VoidCallback diminuirTexto;
 
   static const Color azulEscuro = Color(0xFF103B66);
 
@@ -63,11 +95,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 child: const Row(
                   children: [
-                    Icon(
-                      Icons.home_work,
-                      color: Colors.white,
-                      size: 55,
-                    ),
+                    Icon(Icons.home_work, color: Colors.white, size: 55),
                     SizedBox(width: 15),
                     Expanded(
                       child: Column(
@@ -83,10 +111,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                           Text(
                             'Gestão de Serviços',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
+                            style: TextStyle(color: Colors.white, fontSize: 16),
                           ),
                         ],
                       ),
@@ -96,6 +121,29 @@ class HomeScreen extends StatelessWidget {
               ),
 
               // CONTEÚDO
+              // Controles de acessibilidade
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 8,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    const Text('Tamanho do texto:'),
+                    const SizedBox(width: 10),
+                    OutlinedButton(
+                      onPressed: diminuirTexto,
+                      child: const Text('A−'),
+                    ),
+                    const SizedBox(width: 8),
+                    OutlinedButton(
+                      onPressed: aumentarTexto,
+                      child: const Text('A+'),
+                    ),
+                  ],
+                ),
+              ),
               Expanded(
                 child: ListView(
                   padding: const EdgeInsets.all(20),
@@ -104,10 +152,7 @@ class HomeScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(25),
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
-                          colors: [
-                            Color(0xFFD6E9FA),
-                            Color(0xFFEDF6FF),
-                          ],
+                          colors: [Color(0xFFD6E9FA), Color(0xFFEDF6FF)],
                         ),
                         borderRadius: BorderRadius.circular(18),
                       ),
@@ -123,35 +168,35 @@ class HomeScreen extends StatelessWidget {
 
                     const SizedBox(height: 20),
 
-                   menuCard(
-  icon: Icons.people,
-  title: 'Clientes',
-  subtitle: 'Cadastre e gerencie seus clientes',
-  color: const Color(0xFFE3F1FF),
-  onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const ClientesScreen(),
-      ),
-    );
-  },
-),
+                    menuCard(
+                      icon: Icons.people,
+                      title: 'Clientes',
+                      subtitle: 'Cadastre e gerencie seus clientes',
+                      color: const Color(0xFFE3F1FF),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ClientesScreen(),
+                          ),
+                        );
+                      },
+                    ),
 
-menuCard(
-  icon: Icons.description,
-  title: 'Orçamentos',
-  subtitle: 'Crie e acompanhe os orçamentos',
-  color: const Color(0xFFFFF0D9),
-  onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const OrcamentosScreen(),
-      ),
-    );
-  },
-),
+                    menuCard(
+                      icon: Icons.description,
+                      title: 'Orçamentos',
+                      subtitle: 'Crie e acompanhe os orçamentos',
+                      color: const Color(0xFFFFF0D9),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const OrcamentosScreen(),
+                          ),
+                        );
+                      },
+                    ),
 
                     menuCard(
                       icon: Icons.build,
@@ -159,13 +204,13 @@ menuCard(
                       subtitle: 'Cadastre e acompanhe os serviços',
                       color: const Color(0xFFD4F5D0),
                       onTap: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => const ServicosScreen(),
-    ),
-  );
-},
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ServicosScreen(),
+                          ),
+                        );
+                      },
                     ),
 
                     menuCard(
@@ -212,11 +257,7 @@ menuCard(
             padding: const EdgeInsets.all(22),
             child: Row(
               children: [
-                Icon(
-                  icon,
-                  size: 45,
-                  color: azulEscuro,
-                ),
+                Icon(icon, size: 45, color: azulEscuro),
 
                 const SizedBox(width: 20),
 
@@ -235,19 +276,13 @@ menuCard(
                       const SizedBox(height: 5),
                       Text(
                         subtitle,
-                        style: const TextStyle(
-                          fontSize: 15,
-                          color: azulEscuro,
-                        ),
+                        style: const TextStyle(fontSize: 15, color: azulEscuro),
                       ),
                     ],
                   ),
                 ),
 
-                const Icon(
-                  Icons.arrow_forward_ios,
-                  color: azulEscuro,
-                ),
+                const Icon(Icons.arrow_forward_ios, color: azulEscuro),
               ],
             ),
           ),
